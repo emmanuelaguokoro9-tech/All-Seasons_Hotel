@@ -895,11 +895,20 @@ body.page-booknow{ padding-bottom:calc(var(--summary-bar-h, 68px) + 16px); }
 .room-select-card.is-open .room-select-summary .caret{ transform:rotate(180deg); background:var(--soft-ivory); }
 
 .room-select-details{
-  max-height:0; overflow:hidden; transition:max-height .4s ease;
+  /* Height animates between 0fr and 1fr, so the panel always grows to fit
+     its real content. (A fixed max-height cap used to clip the Booking
+     Policies and the Rooms selector on phones, where the one-column layout
+     is much taller than on desktop.) */
+  display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s ease;
   border-top:1px solid rgba(48,37,31,.1);
 }
-.room-select-card.is-open .room-select-details{ max-height:900px; }
-.room-select-details-inner{ padding:var(--space-4); display:grid; grid-template-columns:1.1fr 1fr; gap:var(--space-4); }
+.room-select-card.is-open .room-select-details{ grid-template-rows:1fr; }
+.room-select-details-inner{
+  min-height:0; overflow:hidden;
+  padding:0 var(--space-4); transition:padding .4s ease;
+  display:grid; grid-template-columns:1.1fr 1fr; gap:var(--space-4);
+}
+.room-select-card.is-open .room-select-details-inner{ padding:var(--space-4); }
 .room-select-details .gallery{ border-radius:var(--radius-s); overflow:hidden; display:grid; gap:.4rem; grid-auto-rows:1fr; }
 .room-select-details .gallery img{ width:100%; height:100%; object-fit:cover; min-height:120px; }
 .room-select-details p.desc{ font-size:.92rem; opacity:.85; margin-bottom:var(--space-3); }
@@ -1311,21 +1320,21 @@ const ROOMS = [
     name: 'Classic Room Fifth @ All Seasons Hotel', price: 450,
     desc: 'Located on our exclusive fifth floor, this beautifully appointed room offers stunning pool or city views, refined comfort and attentive service, complemented by a welcome bottle of wine, freshly baked cookies, fresh fruit and a complimentary minibar.',
     amenities: ['5th Floor Exclusive', 'Pool/City View', 'Welcome Wine', 'Minibar'],
-    images: ['images/Room14.jpg']
+    images: ['images/room14.jpg']
   },
   {
     slug: 'classic-studio-room-fifth', category: 'fifth',
     name: 'Classic Studio Room Fifth @ All Seasons Hotel', price: 500,
     desc: 'An elevated fifth-floor studio experience with elegant spaces, pool or city views and exceptional service, including a personalised welcome bottle of wine, freshly baked cookies, fresh fruit and a complimentary minibar.',
     amenities: ['5th Floor Exclusive', 'Pool/City View', 'Welcome Amenities', 'Minibar'],
-    images: ['images/Room17.jpg']
+    images: ['images/room17.jpg']
   },
   {
     slug: 'classic-suite-fifth', category: 'fifth',
     name: 'Classic Suite Fifth @ All Seasons Hotel', price: 650,
     desc: 'Discover the refined comfort of our exclusive fifth-floor Classic Suites, offering beautiful pool or city views, a complimentary minibar and attentive service designed to make your stay truly memorable.',
     amenities: ['5th Floor Exclusive', 'Pool/City View', 'Minibar', 'Attentive Service'],
-    images: ['images/Room19.jpg']
+    images: ['images/room19.jpg']
   }
 ];
 const CATEGORY_LABEL = { classic: 'Classic Collection', penthouse: 'Penthouse', fifth: 'The Fifth Floor' };
